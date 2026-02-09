@@ -1,0 +1,33 @@
+- type: entity
+  id: DrillPortComputer
+  name: drill computer control module
+  description: The computerized control center of the Drill, autonomously drives the mining head, input, and output ports. You're sure it doesn't have a mind of it's own... You hope...
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _Drill/Machines/Drill/computer.rsi
+    state: port
+    layers:
+    - state: port
+    - state: enabled
+      visible: true
+  - type: Physics
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        density: 200
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+  - type: Transform
+    anchored: true
+    noRot: true
+  - type: DrillPort
+    adjacency: any
