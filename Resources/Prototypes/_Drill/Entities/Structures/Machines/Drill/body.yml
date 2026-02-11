@@ -28,11 +28,11 @@
         - WallLayer
   - type: Transform
     anchored: true
-#  - type: NodeContainer
-#    nodes:
-#      drill:
-#        !type:AdjacentNode
-#        nodeGroupID: DrillAssembly
+  - type: NodeContainer
+    nodes:
+      drill:
+        !type:AdjacentNode
+        nodeGroupID: DrillAssembly
   - type: Appearance
   - type: GenericVisualizer
     visuals:

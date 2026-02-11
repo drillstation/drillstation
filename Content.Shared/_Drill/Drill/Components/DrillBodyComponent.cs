@@ -7,7 +7,7 @@ namespace Content.Shared._Drill.Drill.Components;
 /// </summary>
 
 [RegisterComponent]
-public partial class DrillBodyComponent : Component
+public sealed partial class DrillBodyComponent : Component
 {
     /// <summary>
     /// Does this body tile count as a core

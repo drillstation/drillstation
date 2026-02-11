@@ -26,3 +26,8 @@
     anchored: true
   - type: DrillPort
     adjacency: any
+  - type: NodeContainer
+    nodes:
+      drill:
+        !type:AdjacentNode
+        nodeGroupID: DrillAssembly
