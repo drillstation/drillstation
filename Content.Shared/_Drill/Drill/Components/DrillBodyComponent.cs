@@ -5,7 +5,6 @@ namespace Content.Shared._Drill.Drill.Components;
 /// <summary>
 /// The body of the Drill
 /// </summary>
-
 [RegisterComponent]
 public sealed partial class DrillBodyComponent : Component
 {

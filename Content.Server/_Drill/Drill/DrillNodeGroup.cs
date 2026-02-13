@@ -1,6 +1,5 @@
 using System.Linq;
 
-//using Robust.Shared.Utility;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map.Components;
 
@@ -41,7 +40,12 @@ public sealed class DrillNodeGroup : BaseNodeGroup
     [ViewVariables(VVAccess.ReadOnly)]
     public int CoreCount => _cores.Count;
 
-    
+    /// <summary>
+    /// Gets and assigns the sawmill
+    /// </summary>
+    /// <remarks>
+    /// The excessive use of sawmill is meant to be removed once everything else is in place
+    /// </remarks>
     public override void Initialize(Node sourceNode, IEntityManager entMan) // tmp
     {
         base.Initialize(sourceNode, entMan);
@@ -50,6 +54,13 @@ public sealed class DrillNodeGroup : BaseNodeGroup
         _sawmill.Debug("Drill Nodegroup is initialized"); // tmp
     }
 
+    /// <summary>
+    /// Iterate through all connected nodes and set flags on their components
+    /// </summary>
+    /// <remarks>
+    /// Currently this is using 3 separate foreach loops for body, port, and controller logic
+    /// And port adjacency is a rudimentary placeholder with a simple switch statement
+    /// </remarks>
     public override void LoadNodes(List<Node> groupNodes)
     {
         base.LoadNodes(groupNodes);
@@ -57,14 +68,10 @@ public sealed class DrillNodeGroup : BaseNodeGroup
 
         EntityUid? gridEnt = null;
 
-        // don't think handling body and port logic at the same time is
-        // a good or sustainable idea, but i don't see another way right now
-
         // query systems
         var bodySystem = _entMan.System<DrillBodySystem>();
         var portSystem = _entMan.System<DrillPortSystem>();
         var mapSystem = _entMan.System<MapSystem>();
-
 
         // query components
         var bodyQuery = _entMan.GetEntityQuery<DrillBodyComponent>();
@@ -89,6 +96,7 @@ public sealed class DrillNodeGroup : BaseNodeGroup
             else if (gridEnt != xform.GridUid)
                 continue;
 
+            // get neighboring body tiles
             var nodeNeighbors = mapSystem.GetCellsInSquareArea(xform.GridUid.Value, grid, xform.Coordinates, 1)
                 .Where(entity => entity != nodeOwner && bodyQuery.HasComponent(entity));
 
@@ -122,6 +130,7 @@ public sealed class DrillNodeGroup : BaseNodeGroup
             else if (gridEnt != xform.GridUid)
                 continue;
 
+            // get neighboring body tiles - checking if the port is on an edge or corner
             var nodeNeighbors = mapSystem.GetCellsInSquareArea(xform.GridUid.Value, grid, xform.Coordinates, 1)
                 .Where(entity => entity != nodeOwner && bodyQuery.HasComponent(entity));
 
@@ -164,7 +173,6 @@ public sealed class DrillNodeGroup : BaseNodeGroup
                     }
                     break;
             }
-
 
             _sawmill.Debug($"Drill port node {nodeOwner} : {port.IsValid}"); // tmp
         }
