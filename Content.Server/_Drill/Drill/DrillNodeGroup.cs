@@ -108,8 +108,7 @@ public sealed class DrillNodeGroup : BaseNodeGroup
         }
 
         foreach (var node in groupNodes) // loop thru looking for port
-        {
-            // hella code duplication but whatever
+        { // hella code duplication but whatever
             var nodeOwner = node.Owner;
             if (!portQuery.TryGetComponent(nodeOwner, out var port))
                 continue;
@@ -123,8 +122,66 @@ public sealed class DrillNodeGroup : BaseNodeGroup
             else if (gridEnt != xform.GridUid)
                 continue;
 
+            var nodeNeighbors = mapSystem.GetCellsInSquareArea(xform.GridUid.Value, grid, xform.Coordinates, 1)
+                .Where(entity => entity != nodeOwner && bodyQuery.HasComponent(entity));
+
+            // perform port adjacency check
+            // TODO: this needs *proper logic* for checking adjacency
+            // currently this is a simplistic check for how many adjacent
+            // body tiles there are, which is correct in like 20% of cases at best
+            // in the interest of time and conscious of my skill level i opted not to
+            // copy IconSmooth logic or do anything sophisticated
+            switch (port.Adjacency) // i am going to code duplication hell
+            {
+                case adjacencyType.any:
+                    if (nodeNeighbors.Count() >= 1)
+                    {
+                        portSystem.SetValid(nodeOwner, true, port);
+                    }
+                    else
+                    {
+                        portSystem.SetValid(nodeOwner, false, port);
+                    }
+                    break;
+                case adjacencyType.corner:
+                    if (nodeNeighbors.Count() == 2)
+                    {
+                        portSystem.SetValid(nodeOwner, true, port);
+                    }
+                    else
+                    {
+                        portSystem.SetValid(nodeOwner, false, port);
+                    }
+                    break;
+                case adjacencyType.edge:
+                    if (nodeNeighbors.Count() >= 3)
+                    {
+                        portSystem.SetValid(nodeOwner, true, port);
+                    }
+                    else
+                    {
+                        portSystem.SetValid(nodeOwner, false, port);
+                    }
+                    break;
+            }
+
+
             _sawmill.Debug($"Drill port node {nodeOwner} : {port.IsValid}"); // tmp
         }
 
+        foreach (var node in groupNodes) // loop thru looking for the computer
+        { // there must be some better way to do this
+            var nodeOwner = node.Owner;
+            if (!controllerQuery.TryGetComponent(nodeOwner, out var controller))
+                continue;
+
+            if (_masterController == null)
+                _masterController = nodeOwner;
+
+            _sawmill.Debug($"Drill computer node {nodeOwner}"); // tmp
+        }
+
+        _sawmill.Debug($"Drill controller {_masterController}"); // tmp
+        _sawmill.Debug($"Drill cores {CoreCount}"); // tmp
     }
 }
