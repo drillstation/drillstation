@@ -1,0 +1,16 @@
+- type: entity
+  parent: DrillPortBase
+  id: DrillPortComputer
+  name: drill computer control module
+  description: The computerized control center of the Drill, autonomously drives the mining head, input, and output ports.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _Drill/Machines/Drill/computer.rsi
+    state: port
+    layers:
+    - state: port
+    - state: enabled
+      visible: true
+  - type: DrillPortComputer
