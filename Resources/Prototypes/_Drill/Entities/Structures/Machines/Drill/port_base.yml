@@ -7,7 +7,6 @@
   - type: Clickable
   - type: InteractionOutline
   - type: Sprite
-#    snapCardinals: true
     sprite: _Drill/Machines/Drill/out_ore_0.rsi
     state: port
   - type: Physics

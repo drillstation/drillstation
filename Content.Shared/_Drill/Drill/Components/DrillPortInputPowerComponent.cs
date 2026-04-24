@@ -10,7 +10,7 @@ public sealed partial class DrillPortInputPowerComponent : Component
     /// <summary>
     /// Maximum draw rate for this port
     /// </summary>
-    [DataField("maximumDraw")]
-    [ViewVariables(VVAccess.ReadOnly)]
+    [DataField]
+    [ViewVariables]
     public uint MaximumDraw = 2000;
 }

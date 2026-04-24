@@ -1,3 +1,4 @@
+using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared._Drill.Drill.Components;
@@ -7,42 +8,35 @@ namespace Content.Shared._Drill.Drill.Components;
 /// Used for anything every port needs to do
 /// Specific input/output behavior is handled in discrete input/output components
 /// </summary>
-[RegisterComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class DrillPortComponent : Component
 {
     /// <summary>
     /// Is this port in a valid position to work
     /// </summary>
-    [DataField("isValid")]
+    [DataField, AutoNetworkedField]
     [ViewVariables(VVAccess.ReadOnly)]
     public bool IsValid = false;
 
     /// <summary>
     /// Is this port supplied with power
     /// </summary>
-    [DataField("isPowered")]
+    [DataField, AutoNetworkedField]
     [ViewVariables(VVAccess.ReadOnly)]
     public bool IsPowered = false;
 
     /// <summary>
-    /// Is this port currently doing work
-    /// </summary>
-    [DataField("isActive")]
-    [ViewVariables(VVAccess.ReadOnly)]
-    public bool IsActive = false;
-
-    /// <summary>
     /// The type of adjacency check to the body this port should perform 
     /// </summary>
-    [DataField("adjacency")]
-    [ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
+    [ViewVariables]
     public adjacencyType Adjacency = adjacencyType.any;
 
     /// <summary>
     /// Power, in Watts, this port demands from the Drill
     /// </summary>
-    [DataField("powerDemand")]
-    [ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
+    [ViewVariables]
     public uint PowerDemand = 600;
 }
 

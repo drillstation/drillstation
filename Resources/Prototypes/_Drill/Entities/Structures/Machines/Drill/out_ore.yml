@@ -8,6 +8,10 @@
   - type: DrillPort
     adjacency: edge
   - type: DrillPortOutputOre
+    spawnTable: !type:NestedSelector
+      tableId: RandomOreBasicTable
+    outputSound:
+      path: /Audio/Voice/Human/malescream_3.ogg
 
 - type: entity
   parent: DrillPortOutputOreBase
@@ -22,3 +26,28 @@
 # DrillPortOutputOreOne
 # DrillPortOutputOreTwo
 # DrillPortOutputOreThree
+
+# entity tables for output pools
+
+- type: entityTable
+  id: RandomOreBasicTable
+  table: !type:GroupSelector
+    children:
+    - !type:GroupSelector
+      weight: 25
+      children:
+      - id: Coal1
+        amount: 5
+      - id: SteelOre1
+        amount: 5
+      - id: SpaceQuartz1
+        amount: 3
+    - !type:GroupSelector
+      weight: 5
+      children:
+      - id: GoldOre1
+        amount: 2
+      - id: SilverOre1
+        amount: 2
+      - id: UraniumOre1
+        amount: 2
